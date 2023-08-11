@@ -1,0 +1,12 @@
+%0 Journal Article
+%A 陈丕基
+%T 古氏阿拉木图虫(Almatium gusevi)
+%J 生物进化
+%D 2008
+%N 02
+%K 阿拉木图;Almatium gusevi;哈萨克;
+%X <正>时代:晚三叠世黄山街组产地:新疆吐鲁番盆地托克逊县克尔碱地区分类位置:甲壳纲(Crustacea),鳃足亚纲(Bran-chiopoda),哈萨克虫目(Kazacharthra),凯特蒙虫科(Ketmenidae),阿拉木图虫属(Almatium)。
+%P 19
+%@ 1673-7024
+%L 32-1770/Q
+%W CNKI

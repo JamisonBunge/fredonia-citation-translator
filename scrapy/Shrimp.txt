@@ -1,0 +1,13 @@
+%0 Journal Article
+%A Wang Baoyong %A money Zhou Xing %A Dong Yamao
+%+ Zhejiang Natural Museum, Hangzhou University
+%T Research on Scyllaridae in China Cicada Shrimp Fate (Crushered: Full of Federation)
+%J Xiamen University Journal (Natural Science Edition)
+%D 1998
+%N 03
+%K cicada shrimp family; geographical distribution; China offshore
+%X gave a systematic research on the SCYLIDAE category of the Cicada Shrimp Fate in China for the first time. There are 12 types of them.The division was retrieved.
+%P 135-145
+%@ 0438-0479
+%L 35-1070/N
+%W CNKI
