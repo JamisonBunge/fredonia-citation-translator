@@ -9,7 +9,7 @@ translator = Translator()
 # Read the CSV file with search terms
 df = pd.read_csv('search_terms.csv')
 
-driver = webdriver.Edge()
+driver = webdriver.Firefox()
 
 
 for term in df['Search']:
@@ -18,7 +18,16 @@ for term in df['Search']:
         # Navigate to the search page and enter the search term
         search_box = driver.find_element(By.XPATH, "//*[@id='txt_SearchText']")
         search_box.send_keys(term)
-        search_button = driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div/div[1]/input[2]")
+
+        notice_popup = driver.find_element(By.XPATH,"/html/body/div[1]/div[1]/div/div[1]/a")
+        notice_popup.click()
+
+
+
+
+
+        search_button = driver.find_element(By.ID,"search")
+        print(search_button)
         search_button.click()
 
         # Wait for the results page to load
@@ -36,13 +45,13 @@ for term in df['Search']:
             continue
         except:
             pass
-        
+
         # Click the first checkbox
         checkbox = driver.find_element(By.XPATH, "//*[@id='gridTable']/table/tbody/tr[1]/td[1]/input")
         checkbox.click()
 
         # Hover over the "Batch Operations" tab and click the "EndNote" dropdown
-        batch_ops = driver.find_element(By.XPATH, '//*[@id="batchOpsBox"]/li[2]/a')    
+        batch_ops = driver.find_element(By.XPATH, '//*[@id="batchOpsBox"]/li[2]/a')
         hover = webdriver.ActionChains(driver).move_to_element(batch_ops)
         hover.perform()
         export_docs = driver.find_element(By.XPATH, '//*[@id="batchOpsBox"]/li[2]/ul/li[1]/a')
@@ -53,17 +62,21 @@ for term in df['Search']:
 
         # Wait for the export page to load and click the export button
         time.sleep(3)
-
-        # switch to the next opened tab
         driver.switch_to.window(driver.window_handles[1])  # this is the new tab
+
+        print("sleeping for results to load...")
+        time.sleep(20)
+        # switch to the next opened ta
         clipboard = driver.find_element(By.XPATH, '//*[@id="result"]/ul')
+
+        print("QUERY: ", term)
         print(clipboard.text)
         """with open(term + '.txt', 'w', encoding='utf-8') as f:
             f.write(clipboard.text)"""
         # Instead we append to the same csv file. so we have search term and the results
         df.loc[df['Search'] == term, 'Chinese'] = clipboard.text
         # Translate the clipboard text to English
-        
+
         term_en = translator.translate(term, dest='en').text
         clipboard_en = translator.translate(clipboard.text, dest='en').text
         """with open(term_en + '.txt', 'w', encoding='utf-8') as f:
@@ -88,4 +101,3 @@ for term in df['Search']:
 
 # Close the browser
 driver.quit()
-
