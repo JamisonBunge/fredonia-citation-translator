@@ -12,7 +12,7 @@ todo
 
 ## Project History
 -todo
-This project is a fork from "insert persons name and email link"
+This project is a fork from a Fivver commission done by [Gary](email)
 
 ### Orinigal Scraper Program README
 
