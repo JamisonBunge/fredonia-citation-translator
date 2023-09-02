@@ -1,7 +1,20 @@
 # fredonia-citation-translator
 
-## Original Project README
-Scraper Program README
+## Table Of Contents
+- todo
+## Prerequisites
+todo
+//add pyenv, required python version, virtualenv, etc
+
+## Running Locally
+
+`pip install -r requirements.txt`
+
+## Project History
+-todo
+This project is a fork from "insert persons name and email link"
+
+### Orinigal Scraper Program README
 
 This document provides instructions for using the Scraper Program.
 
