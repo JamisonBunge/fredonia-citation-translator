@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.2] - 2023-09-01
+### Added
+- scrapy program is now running partially
+- removed duplicate python code and unneeded files
+- iterated readme
+
 ## [0.0.1] - 2023-08-11
 ### Added
 - project boilerplate reduced to only necessary information
