@@ -12,7 +12,11 @@ todo
 
 ## Project History
 -todo
+<<<<<<< HEAD
 This project is a fork from a Fiverr commission by [Gary](email)
+=======
+This project is a fork from a Fivver commission done by [Gary](email)
+>>>>>>> eceff1f (add author place holder)
 
 ### Orinigal Scraper Program README
 
