@@ -18,7 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - iterated readme
 - scrapy program is now running partially
 - removed duplicate python code and unneeded files
-- iterated readme
+- credited fork, iterated readme
+- python virtual env strategy
 
 
 ## [0.0.1] - 2023-08-11
