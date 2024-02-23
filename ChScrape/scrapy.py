@@ -1,15 +1,27 @@
 import pandas as pd
-from selenium import webdriver
+
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
 from googletrans import Translator
 translator = Translator()
+from selenium import webdriver
+
+from selenium.webdriver.edge.service import Service
+
+
+
+service = Service(executable_path="../geckodriver")
+
+# options = webdriver.EdgeOptions()
+driver = webdriver.Firefox(service=service)
 
 # Read the CSV file with search terms
 df = pd.read_csv('search_terms.csv')
 
-driver = webdriver.Firefox()
+
+
+print('hello')
 
 
 for term in df['Search']:

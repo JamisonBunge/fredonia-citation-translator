@@ -10,6 +10,10 @@ todo
 
 `pip install -r requirements.txt`
 
+Activate the python env
+`source venv/bin/activate`
+
+
 ## Project History
 -todo
 <<<<<<< HEAD
