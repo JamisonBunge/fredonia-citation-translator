@@ -14,6 +14,9 @@ todo
 
 ### Install
 
+#### Init your python virtual env
+`python -m venv venv/`
+
 #### Source the python virtual env
 `source venv/bin/activate`
 
