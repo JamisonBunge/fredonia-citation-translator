@@ -9,8 +9,6 @@ from selenium import webdriver
 
 from selenium.webdriver.edge.service import Service
 
-
-
 service = Service(executable_path="../geckodriver")
 
 # options = webdriver.EdgeOptions()
@@ -21,7 +19,6 @@ df = pd.read_csv('search_terms.csv')
 
 
 
-print('hello')
 
 
 for term in df['Search']:
@@ -63,13 +60,16 @@ for term in df['Search']:
         checkbox.click()
 
         # Hover over the "Batch Operations" tab and click the "EndNote" dropdown
-        batch_ops = driver.find_element(By.XPATH, '//*[@id="batchOpsBox"]/li[2]/a')
+        print("hover over element")
+        batch_ops = driver.find_element(By.XPATH, '//*[@id="batchOpsBox"]')
         hover = webdriver.ActionChains(driver).move_to_element(batch_ops)
         hover.perform()
-        export_docs = driver.find_element(By.XPATH, '//*[@id="batchOpsBox"]/li[2]/ul/li[1]/a')
+
+        print("nav to drop down")
+        export_docs = driver.find_element(By.XPATH, '/html/body/div[5]/div[2]/div[2]/div[2]/form/div/div[1]/div[2]/div[2]/ul[1]/li/ul/li[1]')
         hover = webdriver.ActionChains(driver).move_to_element(export_docs)
         hover.perform()
-        endnote_dropdown = driver.find_element(By.XPATH, "//*[@id='batchOpsBox']/li[2]/ul/li[1]/ul/li[9]/a")
+        endnote_dropdown = driver.find_element(By.XPATH, "/html/body/div[5]/div[2]/div[2]/div[2]/form/div/div[1]/div[2]/div[2]/ul[1]/li/ul/li[1]/ul/li[8]")
         endnote_dropdown.click()
 
         # Wait for the export page to load and click the export button
@@ -95,6 +95,7 @@ for term in df['Search']:
             f.write(clipboard_en)"""
         # append the translated results to the same csv file
         df.loc[df['Search'] == term, 'English'] = clipboard_en
+
 
         #save the csv file
         df.to_csv('search_results.csv', index=False)

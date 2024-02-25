@@ -14,30 +14,30 @@ todo
 
 ### Install
 
-#### Init your python virtual env
+##### Init your python virtual env
 `python -m venv venv/`
 
-#### Source the python virtual env
+##### Source the python virtual env
 `source venv/bin/activate`
 
-#### Download and Install Dependencies
+##### Download and Install Dependencies
 `pip install -r requirements.txt`
 
-####  Geckodriver
+#####  Geckodriver
 
 Install Geckodriver for Firefox driver. This must be compatable with your version of firefox. Place this the driver/ folder and name it `geckodriver`
 
 ### Running The Program
 
-Running the program
+##### Running the program
 `python scrapy.py --input=inputFilePath`
 
 ### Developer Commands
 
-#### Installing new packages
+##### Installing new packages
 `pip install packageName`
 
-#### Updating the requirements
+##### Updating the requirements
 `pip freeze >> requirements.txt`
 
 
