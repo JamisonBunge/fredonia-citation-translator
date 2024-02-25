@@ -2,13 +2,46 @@
 
 ## Table Of Contents
 - todo
+
+
+## Overview
+
 ## Prerequisites
 todo
 //add pyenv, required python version, virtualenv, etc
 
-## Running Locally
+## Set Up Local Project
 
+### Install
+
+##### Init your python virtual env
+`python -m venv venv/`
+
+##### Source the python virtual env
+`source venv/bin/activate`
+
+##### Download and Install Dependencies
 `pip install -r requirements.txt`
+
+#####  Geckodriver
+
+Install Geckodriver for Firefox driver. This must be compatable with your version of firefox. Place this the driver/ folder and name it `geckodriver`
+
+### Running The Program
+
+##### Running the program
+`python scrapy.py --input=inputFilePath`
+
+### Developer Commands
+
+##### Installing new packages
+`pip install packageName`
+
+##### Updating the requirements
+`pip freeze >> requirements.txt`
+
+
+
 
 ## Project History
 -todo
