@@ -9,14 +9,17 @@ translator = Translator()
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service
 
+service = Service(executable_path="../geckodriver")
+driver = webdriver.Firefox(service=service)
 
 
 def scrapy(term):
-    try:
-        service = Service(executable_path="../geckodriver")
 
-        # options = webdriver.EdgeOptions()
-        driver = webdriver.Firefox(service=service)
+    res = ""
+    err = False
+
+    try:
+
         driver.get('https://cnki.net/')
         # Navigate to the search page and enter the search term
         print("Nav and search on homepage")
@@ -75,20 +78,21 @@ def scrapy(term):
 
         print("QUERY: ", term)
         print(clipboard.text)
-        driver.quit()
-        return clipboard.txt, False
 
-
-
-        #save the csv file
-        #df.to_csv('search_results.csv', index=False)
+        res = clipboard.text
+        err = False
     except Exception as e:
         print('Error with term: ' + term)
         print(e)
-        driver.quit()
-        return "", True
+        res = ""
+        err = True
 
-    # Close the browser
+    driver.close()
+    driver.switch_to.window(driver.window_handles[0])
+
+
+    return res, err
+
 
 
 
@@ -96,7 +100,7 @@ def scrapy(term):
 
 def main():
     # Create Mapping
-    termMap = dict()
+    termBlobMap = dict()
     termsSuccessful = dict()
     # Read the CSV file with search terms
 
@@ -110,17 +114,18 @@ def main():
     for term in terms:
         blobResult, err = scrapy(term)
         if err == False:
-            termMap[term] = blobResult
+            termBlobMap[term] = blobResult
         termsSuccessful[term] = not err
 
-
-
-
-
-    # Read in terms
-    print("Hello World!")
+    #in memory results
+    for term in terms:
+        print(f'{term} scraped status: {termsSuccessful[term]}\n')
+        if termsSuccessful[term]:
+            print("blob endnote response:")
+            print(termBlobMap[term])
 
 
 # P
 if __name__ == "__main__":
     main()
+    driver.quit()
