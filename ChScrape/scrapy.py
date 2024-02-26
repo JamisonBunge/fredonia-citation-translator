@@ -8,6 +8,7 @@ from googletrans import Translator
 translator = Translator()
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service
+from endnote import EndnoteRow, EndNoteEntry, rowsToEntrys, endnote
 
 service = Service(executable_path="../geckodriver")
 driver = webdriver.Firefox(service=service)
@@ -122,7 +123,11 @@ def main():
         print(f'{term} scraped status: {termsSuccessful[term]}\n')
         if termsSuccessful[term]:
             print("blob endnote response:")
-            print(termBlobMap[term])
+            #print(termBlobMap[term])
+            endnote(termBlobMap[term])
+
+
+
 
 
 # P
