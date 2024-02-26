@@ -7,6 +7,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service
 from endnote import EndnoteRow, EndNoteEntry, rowsToEntrys, endnote,translate
+from googletrans import Translator
 
 service = Service(executable_path="../geckodriver")
 driver = webdriver.Firefox(service=service)

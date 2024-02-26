@@ -1,7 +1,6 @@
 # Define classes and functions
 from typing import List
 from googletrans import Translator
-translator = Translator()
 import re
 
 class EndnoteRow:
@@ -18,10 +17,15 @@ class EndNoteEntry:
 
 
 def translate(endNoteRows: List[EndnoteRow]):
-  for i, row in enumerate(endNoteRows):
-      res = translator.translate(row.native_citation_value)
-      print(f't:{res.text}')
-      row.english_citation_value = res.text
+    translator = Translator()
+    print(translator)
+
+    for i, row in enumerate(endNoteRows):
+        print(f' to translate: {row.native_citation_value}')
+        res = translator.translate(row.native_citation_value)
+        row.english_citation_value = res.text
+        print(f't:{res.text}')
+
 
 def rowsToEntrys(endNoteRows: List[EndnoteRow]):
 
