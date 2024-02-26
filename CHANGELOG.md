@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - single script breakinginto actual program structure
 - scrapy code not only handles on term and the interation is handled at another level of abstraction
 - single terms can now be flagged as 'errored out' without inpacting other terms execution
+- populating endnote data structure
 ### Removed
 - old script translation and write boilerplate
 
