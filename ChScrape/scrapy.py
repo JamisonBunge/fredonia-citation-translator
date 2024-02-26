@@ -1,37 +1,34 @@
 import pandas as pd
-
+import os
+import sys
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
 from googletrans import Translator
 translator = Translator()
 from selenium import webdriver
-
 from selenium.webdriver.edge.service import Service
+from endnote import EndnoteRow, EndNoteEntry, rowsToEntrys, endnote
 
 service = Service(executable_path="../geckodriver")
-
-# options = webdriver.EdgeOptions()
 driver = webdriver.Firefox(service=service)
 
-# Read the CSV file with search terms
-df = pd.read_csv('search_terms.csv')
 
+def scrapy(term):
 
+    res = ""
+    err = False
 
-
-
-for term in df['Search']:
     try:
+
         driver.get('https://cnki.net/')
         # Navigate to the search page and enter the search term
+        print("Nav and search on homepage")
         search_box = driver.find_element(By.XPATH, "//*[@id='txt_SearchText']")
         search_box.send_keys(term)
 
         notice_popup = driver.find_element(By.XPATH,"/html/body/div[1]/div[1]/div/div[1]/a")
         notice_popup.click()
-
-
 
 
 
@@ -51,12 +48,11 @@ for term in df['Search']:
             # write a new file called log.txt, if it exists append to it
             with open('log.txt', 'a', encoding='utf-8') as f:
                 f.write('No results for term: ' + term + '\n')
-            continue
         except:
             pass
 
         # Click the first checkbox
-        checkbox = driver.find_element(By.XPATH, "//*[@id='gridTable']/table/tbody/tr[1]/td[1]/input")
+        checkbox = driver.find_element(By.XPATH, "/html/body/div[5]/div[2]/div[2]/div[2]/form/div/div[1]/div[2]/div[1]/label")
         checkbox.click()
 
         # Hover over the "Batch Operations" tab and click the "EndNote" dropdown
@@ -83,34 +79,58 @@ for term in df['Search']:
 
         print("QUERY: ", term)
         print(clipboard.text)
-        """with open(term + '.txt', 'w', encoding='utf-8') as f:
-            f.write(clipboard.text)"""
-        # Instead we append to the same csv file. so we have search term and the results
-        df.loc[df['Search'] == term, 'Chinese'] = clipboard.text
-        # Translate the clipboard text to English
 
-        term_en = translator.translate(term, dest='en').text
-        clipboard_en = translator.translate(clipboard.text, dest='en').text
-        """with open(term_en + '.txt', 'w', encoding='utf-8') as f:
-            f.write(clipboard_en)"""
-        # append the translated results to the same csv file
-        df.loc[df['Search'] == term, 'English'] = clipboard_en
-
-
-        #save the csv file
-        df.to_csv('search_results.csv', index=False)
+        res = clipboard.text
+        err = False
     except Exception as e:
-        df.to_csv('search_results.csv', index=False)
         print('Error with term: ' + term)
         print(e)
-        with open('debug.txt', 'a', encoding='utf-8') as f:
-            if term in f.read():
-                continue
-            f.write('Error with term: ' + term + '\n')
-            f.write(str(e) + '\n')
-            f.write("-----------------------" + '\n')
-        # go to the next term
-        continue
+        res = ""
+        err = True
 
-# Close the browser
-driver.quit()
+    driver.close()
+    driver.switch_to.window(driver.window_handles[0])
+
+
+    return res, err
+
+
+
+
+
+
+def main():
+    # Create Mapping
+    termBlobMap = dict()
+    termsSuccessful = dict()
+    # Read the CSV file with search terms
+
+    #todo make this safe
+    fn = sys.argv[1]
+    if os.path.exists(fn):
+        print(os.path.basename(fn))
+    termsCVS = pd.read_csv(fn)
+
+    terms = termsCVS["Search"]
+    for term in terms:
+        blobResult, err = scrapy(term)
+        if err == False:
+            termBlobMap[term] = blobResult
+        termsSuccessful[term] = not err
+
+    #in memory results
+    for term in terms:
+        print(f'{term} scraped status: {termsSuccessful[term]}\n')
+        if termsSuccessful[term]:
+            print("blob endnote response:")
+            #print(termBlobMap[term])
+            endnote(termBlobMap[term])
+
+
+
+
+
+# P
+if __name__ == "__main__":
+    main()
+    driver.quit()

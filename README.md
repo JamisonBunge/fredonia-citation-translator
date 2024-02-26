@@ -30,7 +30,7 @@ Install Geckodriver for Firefox driver. This must be compatable with your versio
 ### Running The Program
 
 ##### Running the program
-`python scrapy.py --input=inputFilePath`
+`python scrapy.py inputFilePath`
 
 ### Developer Commands
 
