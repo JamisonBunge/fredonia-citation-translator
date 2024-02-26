@@ -1,18 +1,27 @@
 # Define classes and functions
 from typing import List
+from googletrans import Translator
+translator = Translator()
 import re
 
 class EndnoteRow:
     def __init__(self, citation_key: str, citation_value: str):
         self.citation_key = citation_key
-        self.citation_value = citation_value
+        self.native_citation_value = citation_value
+        self.english_citation_value = ""
+        self.was_translated = False
 
 class EndNoteEntry:
     def __init__(self, endNoteRows: List[EndnoteRow]):
         self.native_entry_rows = endNoteRows
         self.english_entry_rows = list()
-        self.was_translated = False
 
+
+def translate(endNoteRows: List[EndnoteRow]):
+  for i, row in enumerate(endNoteRows):
+      res = translator.translate(row.native_citation_value)
+      print(f't:{res.text}')
+      row.english_citation_value = res.text
 
 def rowsToEntrys(endNoteRows: List[EndnoteRow]):
 
@@ -34,8 +43,7 @@ def endnote(blob):
     endNotes = list()
 
     for line in lines:
-        print(f'line {line}\n')
-         # Define the regular expression pattern
+        # Define the regular expression pattern
         pattern = r'^(%\w+)\s*(.*)$'
         # Use re.match() to find the matches
         match = re.match(pattern, line)
@@ -48,13 +56,10 @@ def endnote(blob):
             row = EndnoteRow(letter_part,rest_part)
             endNotes.append(row)
 
-            print("Letter part:", letter_part)
-            print("Rest part:", rest_part)
+            #print("Letter part:", letter_part)
+            #print("Rest part:", rest_part)
         else:
+            print(f'line {line}\n')
             print("No match found")
 
-    entrys = rowsToEntrys(endNotes)
-    print(len(entrys))
-    print("try printing as endnotes")
-    print(entrys)
-    return entrys
+    return endNotes

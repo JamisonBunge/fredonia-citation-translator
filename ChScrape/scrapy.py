@@ -4,11 +4,9 @@ import sys
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
-from googletrans import Translator
-translator = Translator()
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service
-from endnote import EndnoteRow, EndNoteEntry, rowsToEntrys, endnote
+from endnote import EndnoteRow, EndNoteEntry, rowsToEntrys, endnote,translate
 
 service = Service(executable_path="../geckodriver")
 driver = webdriver.Firefox(service=service)
@@ -94,18 +92,12 @@ def scrapy(term):
 
     return res, err
 
-
-
-
-
-
 def main():
     # Create Mapping
     termBlobMap = dict()
     termsSuccessful = dict()
-    # Read the CSV file with search terms
 
-    #todo make this safe
+    # Read the CSV file with search terms #todo make this safe
     fn = sys.argv[1]
     if os.path.exists(fn):
         print(os.path.basename(fn))
@@ -118,14 +110,20 @@ def main():
             termBlobMap[term] = blobResult
         termsSuccessful[term] = not err
 
-    #in memory results
+    # Put into EndNote Format & Translate
+    allEntrys = list()
     for term in terms:
         print(f'{term} scraped status: {termsSuccessful[term]}\n')
         if termsSuccessful[term]:
             print("blob endnote response:")
             #print(termBlobMap[term])
-            endnote(termBlobMap[term])
-
+            entrysForTerm = endnote(termBlobMap[term])
+            translate(entrysForTerm)
+            entrys = rowsToEntrys(entrysForTerm)
+            print(len(entrys))
+            print("try printing as endnotes")
+            print(entrys)
+            allEntrys.append(entrys)
 
 
 

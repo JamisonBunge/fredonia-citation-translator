@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.5] - 2024-02-26
+### Added
+- integrate translation
+- save output
+
 ## [0.0.4] - 2024-02-25
 ### Added
 - input terms file as command line arg
