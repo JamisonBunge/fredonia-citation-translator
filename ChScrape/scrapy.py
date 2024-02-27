@@ -94,7 +94,7 @@ def scrapy(term):
     return res, err
 
 def main():
-    # Create Mapping
+    # Create Mapping # todo: some sort of struct
     termBlobMap = dict()
     termsSuccessful = dict()
 
@@ -104,6 +104,7 @@ def main():
         print(os.path.basename(fn))
     termsCVS = pd.read_csv(fn)
 
+    # Scrap the database for each term
     terms = termsCVS["Search"]
     for term in terms:
         blobResult, err = scrapy(term)
@@ -111,20 +112,39 @@ def main():
             termBlobMap[term] = blobResult
         termsSuccessful[term] = not err
 
-    # Put into EndNote Format & Translate
-    allEntrys = list()
+    # Put into EndNote format & translate content
+    allEntrys = dict()
     for term in terms:
-        print(f'{term} scraped status: {termsSuccessful[term]}\n')
+        print(f'{term} content scraped: {termsSuccessful[term]}\n')
         if termsSuccessful[term]:
-            print("blob endnote response:")
-            #print(termBlobMap[term])
+
+
             entrysForTerm = endnote(termBlobMap[term])
+            # translate content
             translate(entrysForTerm)
-            entrys = rowsToEntrys(entrysForTerm)
+            # group by journal entry
+            entrys = rowsToEntrys(entrysForTerm,term)
             print(len(entrys))
             print("try printing as endnotes")
             print(entrys)
-            allEntrys.append(entrys)
+
+            allEntrys[term] = entrys
+
+
+    # write output
+    with open('output.txt', 'w') as file:
+        for term in allEntrys:
+            print(f'\n\nSearch Term "{term}"\n\n')
+            file.write(f'\n\nSearch Term "{term}"\n\n')
+            for entry in allEntrys[term]:
+                print(f"what is this {entry}")
+                for i, val in enumerate(entry.native_entry_rows):
+                    print(f'{val.citation_key} ; {val.english_citation_value} ;  {val.native_citation_value}')
+                    file.write(f'{val.citation_key} ; {val.english_citation_value} ;  {val.native_citation_value}\n')
+
+
+
+
 
 
 

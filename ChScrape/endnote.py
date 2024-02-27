@@ -3,15 +3,29 @@ from typing import List
 from googletrans import Translator
 import re
 
+# todo: docouple translation
+
 class EndnoteRow:
     def __init__(self, citation_key: str, citation_value: str):
         self.citation_key = citation_key
         self.native_citation_value = citation_value
         self.english_citation_value = ""
         self.was_translated = False
+        self.combined_citation_value = ""
 
 class EndNoteEntry:
-    def __init__(self, endNoteRows: List[EndnoteRow]):
+    def __init__(self, term: str):
+
+        self.native_search_term = term
+        translator = Translator()
+        res = translator.translate(term)
+        self.english_search_term = res.text
+
+        self.english_entry_rows = list()
+
+
+
+    def __init__(self, endNoteRows: List[EndnoteRow],term: str):
         self.native_entry_rows = endNoteRows
         self.english_entry_rows = list()
 
@@ -27,20 +41,23 @@ def translate(endNoteRows: List[EndnoteRow]):
         print(f't:{res.text}')
 
 
-def rowsToEntrys(endNoteRows: List[EndnoteRow]):
+
+ # ([]EndnoteRow, term ) -> []EndnoteEntry
+def rowsToEntrys(endNoteRows: List[EndnoteRow],term: str):
 
     entrys = list()
     start = 0
     for i, row in enumerate(endNoteRows):
         if row.citation_key=="%0" and i != 0:
             e = endNoteRows[start:i]
-            print(f'subentry: {start}:{i}')
-            entry = EndNoteEntry(e)
+            print(f'Entry indexs: {start}:{i}')
+            entry = EndNoteEntry(e,term)
             start = i
             entrys.append(entry)
 
     return entrys
 
+# (blob: endnote_scraped) -> []EndnoteRow
 def endnote(blob):
 
     lines = blob.splitlines()
