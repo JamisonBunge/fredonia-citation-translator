@@ -4,11 +4,10 @@ import sys
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
-from googletrans import Translator
-translator = Translator()
 from selenium import webdriver
 from selenium.webdriver.edge.service import Service
-from endnote import EndnoteRow, EndNoteEntry, rowsToEntrys, endnote
+from endnote import EndnoteRow, EndNoteEntry, rowsToEntrys, endnote,translate
+from googletrans import Translator
 
 service = Service(executable_path="../geckodriver")
 driver = webdriver.Firefox(service=service)
@@ -94,23 +93,18 @@ def scrapy(term):
 
     return res, err
 
-
-
-
-
-
 def main():
-    # Create Mapping
+    # Create Mapping # todo: some sort of struct
     termBlobMap = dict()
     termsSuccessful = dict()
-    # Read the CSV file with search terms
 
-    #todo make this safe
+    # Read the CSV file with search terms #todo make this safe
     fn = sys.argv[1]
     if os.path.exists(fn):
         print(os.path.basename(fn))
     termsCVS = pd.read_csv(fn)
 
+    # Scrap the database for each term
     terms = termsCVS["Search"]
     for term in terms:
         blobResult, err = scrapy(term)
@@ -118,13 +112,38 @@ def main():
             termBlobMap[term] = blobResult
         termsSuccessful[term] = not err
 
-    #in memory results
+    # Put into EndNote format & translate content
+    allEntrys = dict()
     for term in terms:
-        print(f'{term} scraped status: {termsSuccessful[term]}\n')
+        print(f'{term} content scraped: {termsSuccessful[term]}\n')
         if termsSuccessful[term]:
-            print("blob endnote response:")
-            #print(termBlobMap[term])
-            endnote(termBlobMap[term])
+
+
+            entrysForTerm = endnote(termBlobMap[term])
+            # translate content
+            translate(entrysForTerm)
+            # group by journal entry
+            entrys = rowsToEntrys(entrysForTerm,term)
+            print(len(entrys))
+            print("try printing as endnotes")
+            print(entrys)
+
+            allEntrys[term] = entrys
+
+
+    # write output
+    with open('output.txt', 'w') as file:
+        for term in allEntrys:
+            print(f'\n\nSearch Term "{term}"\n\n')
+            file.write(f'\n\nSearch Term "{term}"\n\n')
+            for entry in allEntrys[term]:
+                print(f"what is this {entry}")
+                for i, val in enumerate(entry.native_entry_rows):
+                    print(f'{val.citation_key} ; {val.english_citation_value} ;  {val.native_citation_value}')
+                    file.write(f'{val.citation_key} ; {val.english_citation_value} ;  {val.native_citation_value}\n')
+
+
+
 
 
 
