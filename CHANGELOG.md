@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.6] - 2024-02-27
+### Fixed
+- Endnote Regular expression now catches special characters
+
 ## [0.0.5] - 2024-02-26
 ### Added
 - integrate translation
