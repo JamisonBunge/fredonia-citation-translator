@@ -65,7 +65,7 @@ def endnote(blob):
 
     for line in lines:
         # Define the regular expression pattern
-        pattern = r'^(%\w+)\s*(.*)$'
+        pattern = r'^([%@+\w]+)\s*(.*)$'
         # Use re.match() to find the matches
         match = re.match(pattern, line)
 
@@ -77,10 +77,10 @@ def endnote(blob):
             row = EndnoteRow(letter_part,rest_part)
             endNotes.append(row)
 
-            #print("Letter part:", letter_part)
-            #print("Rest part:", rest_part)
+            # print("Letter part:", letter_part)
+            # print("Rest part:", rest_part)
         else:
-            print(f'line {line}\n')
-            print("No match found")
+            print(f'No match found: {line}\n')
+
 
     return endNotes
