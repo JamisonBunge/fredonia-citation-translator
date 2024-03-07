@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.7] - 2024-03-06
+### Changed
+- Fields that do not need a translation no longer print out twice
+- translated lines take the following format: %Citation English_Translation \[Native_Text\]
+
 ## [0.0.6] - 2024-02-27
 ### Fixed
 - Endnote Regular expression now catches special characters

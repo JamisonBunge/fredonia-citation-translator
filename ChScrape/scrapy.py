@@ -125,7 +125,6 @@ def main():
             # group by journal entry
             entrys = rowsToEntrys(entrysForTerm,term)
             print(len(entrys))
-            print("try printing as endnotes")
             print(entrys)
 
             allEntrys[term] = entrys
@@ -139,8 +138,16 @@ def main():
             for entry in allEntrys[term]:
                 print(f"what is this {entry}")
                 for i, val in enumerate(entry.native_entry_rows):
-                    print(f'{val.citation_key} ; {val.english_citation_value} ;  {val.native_citation_value}')
-                    file.write(f'{val.citation_key} ; {val.english_citation_value} ;  {val.native_citation_value}\n')
+                   # comparison works for now but feels hacky; the write code shouldnt have to know about this logic
+                    output = ""
+                    if val.english_citation_value != val.native_citation_value:
+                        output = f'{val.citation_key} {val.english_citation_value} [{val.native_citation_value}]\n'
+                    else:
+                        output = f'{val.citation_key} {val.native_citation_value}\n'
+
+                    print(output)
+                    file.write(output)
+
 
 
 

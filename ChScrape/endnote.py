@@ -34,6 +34,9 @@ def translate(endNoteRows: List[EndnoteRow]):
     translator = Translator()
     print(translator)
 
+    # do_not_translate = dict("%P", "%@", "%L", "%W","%0")
+
+
     for i, row in enumerate(endNoteRows):
         print(f' to translate: {row.native_citation_value}')
         res = translator.translate(row.native_citation_value)
