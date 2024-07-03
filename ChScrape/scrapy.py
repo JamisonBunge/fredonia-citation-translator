@@ -9,10 +9,6 @@ from selenium.webdriver.edge.service import Service
 from endnote import EndnoteRow, EndNoteEntry, rowsToEntrys, endnote,translate
 from googletrans import Translator
 
-
-ff_options = webdriver.FirefoxOptions()
-
-
 def scrapy(term):
 
     res = ""
