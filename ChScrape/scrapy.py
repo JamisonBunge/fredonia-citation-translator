@@ -9,31 +9,30 @@ from selenium.webdriver.edge.service import Service
 from endnote import EndnoteRow, EndNoteEntry, rowsToEntrys, endnote,translate
 from googletrans import Translator
 
-service = Service(executable_path="../geckodriver")
-driver = webdriver.Firefox(service=service)
-
-
 def scrapy(term):
 
     res = ""
     err = False
 
     try:
+        service = Service(executable_path="./geckodriver")
+        driver = webdriver.Firefox(service=service)
 
-        driver.get('https://cnki.net/')
+        driver.get('https://cnki.net/kns/defaultresult/index')
         # Navigate to the search page and enter the search term
         print("Nav and search on homepage")
-        search_box = driver.find_element(By.XPATH, "//*[@id='txt_SearchText']")
+        search_box = driver.find_element(By.XPATH, "//*[@id='txt_search']")
         search_box.send_keys(term)
+        search_box.send_keys(Keys.RETURN)
 
-        notice_popup = driver.find_element(By.XPATH,"/html/body/div[1]/div[1]/div/div[1]/a")
-        notice_popup.click()
+        #notice_popup = driver.find_element(By.XPATH,"/html/body/div[1]/div[1]/div/div[1]/a")
+        #notice_popup.click()
 
 
 
-        search_button = driver.find_element(By.ID,"search")
-        print(search_button)
-        search_button.click()
+        # search_button = driver.find_element(By.ID,"search")
+        # print(search_button)
+        # search_button.click()
 
         # Wait for the results page to load
         time.sleep(3)
@@ -55,17 +54,36 @@ def scrapy(term):
         checkbox.click()
 
         # Hover over the "Batch Operations" tab and click the "EndNote" dropdown
-        print("hover over element")
+        print("Nav Export Menu 1 - Batch Box")
         batch_ops = driver.find_element(By.XPATH, '//*[@id="batchOpsBox"]')
-        hover = webdriver.ActionChains(driver).move_to_element(batch_ops)
-        hover.perform()
+        batch_ops_hover =  webdriver.ActionChains(driver).move_to_element(batch_ops)
+        batch_ops_hover.perform()
+        time.sleep(2)
 
-        print("nav to drop down")
+        print("Nav Export Menu 2 - First Menu")
         export_docs = driver.find_element(By.XPATH, '/html/body/div[5]/div[2]/div[2]/div[2]/form/div/div[1]/div[2]/div[2]/ul[1]/li/ul/li[1]')
-        hover = webdriver.ActionChains(driver).move_to_element(export_docs)
-        hover.perform()
-        endnote_dropdown = driver.find_element(By.XPATH, "/html/body/div[5]/div[2]/div[2]/div[2]/form/div/div[1]/div[2]/div[2]/ul[1]/li/ul/li[1]/ul/li[8]")
-        endnote_dropdown.click()
+        nextHover =  webdriver.ActionChains(driver).move_to_element(export_docs)
+        nextHover.perform()
+        time.sleep(2)
+
+        print("Nav Export Menu 3 - Export Menu Step in ")
+        endnote_dropdown = driver.find_element(By.XPATH, '/html/body/div[5]/div[2]/div[2]/div[2]/form/div/div[1]/div[2]/div[2]/ul[1]/li/ul/li[1]/ul/li[1]')
+        ennote_dropdown_hover = webdriver.ActionChains(driver).move_to_element(endnote_dropdown)
+        ennote_dropdown_hover.perform()
+        time.sleep(2)
+
+        # endnote_dropdown.click()
+
+        print("Nav Export Menu 3 - Click EndNote link ")
+        endnote_link = driver.find_element(By.XPATH, '/html/body/div[5]/div[2]/div[2]/div[2]/form/div/div[1]/div[2]/div[2]/ul[1]/li/ul/li[1]/ul/li[8]')
+        # ennote_dropdown_hover = webdriver.ActionChains(driver).move_to_element(endnote_dropdown)
+        # ennote_dropdown_hover.perform()
+        time.sleep(2)
+
+        endnote_link.click()
+        ###
+
+
 
         # Wait for the export page to load and click the export button
         time.sleep(3)
@@ -87,8 +105,8 @@ def scrapy(term):
         res = ""
         err = True
 
-    driver.close()
-    driver.switch_to.window(driver.window_handles[0])
+    driver.quit()
+    #driver.switch_to.window(driver.window_handles[0])
 
 
     return res, err
@@ -159,4 +177,3 @@ def main():
 # P
 if __name__ == "__main__":
     main()
-    driver.quit()
