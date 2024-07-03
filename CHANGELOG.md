@@ -7,14 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.7] - 2024-07-03
+## [0.0.8] - 2024-07-03
 ### Fixed
 - program now works again with recent Website UI change
-
-## [0.0.7] - 2024-03-06
-### Changed
-- Fields that do not need a translation no longer print out twice
-- translated lines take the following format: %Citation English_Translation \[Native_Text\]
 
 ## [0.0.7] - 2024-03-06
 ### Changed
